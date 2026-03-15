@@ -6,6 +6,14 @@ This workflow helps businesses **increase customer retention and engagement** by
 
 ---
 
+## Workflow Architecture
+
+Below is the visual representation of the n8n workflow.
+
+![Workflow Diagram](workflow.png)
+
+---
+
 # Overview
 
 The workflow processes customer transaction data and triggers different reward messages depending on customer activity.
