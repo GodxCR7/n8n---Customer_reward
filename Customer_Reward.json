@@ -1,0 +1,422 @@
+{
+  "name": "Customer_Reward",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "fydo-transaction",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -112,
+        -48
+      ],
+      "id": "fb45b8be-69c4-4d80-b33b-9c607da0a261",
+      "name": "Webhook",
+      "webhookId": "6b3bbdf9-e6ed-4ec2-8b8b-3a1f3e7ea46a"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1Rrx0LVVzljWJzv58oefrXkr39LBXJn7pScuX1PY0WMQ",
+          "mode": "list",
+          "cachedResultName": "Fydo Customer Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Rrx0LVVzljWJzv58oefrXkr39LBXJn7pScuX1PY0WMQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Rrx0LVVzljWJzv58oefrXkr39LBXJn7pScuX1PY0WMQ/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        240,
+        32
+      ],
+      "id": "611287d9-8eb8-4b97-bf33-d6380c9d3846",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "MNbpZQpx0YQzUd1Y",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "642de4fa-b6f4-4019-892c-23bde8ec2f61",
+              "leftValue": "={{ $json.visit_count }}",
+              "rightValue": "1",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        576,
+        -224
+      ],
+      "id": "da30c932-9a82-44a1-89f6-21794754a03e",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "4e574afe-993e-435c-a849-f6f145389c3e",
+              "leftValue": "={{ $json.visit_count }}",
+              "rightValue": "5",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        576,
+        48
+      ],
+      "id": "a5a3f0af-ee75-4abb-ad42-f6608fc4ab22",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a64334ad-aff5-46c9-b5d2-111e3b42aeef",
+              "name": "reward_type",
+              "value": "Loyalty Cashback",
+              "type": "string"
+            },
+            {
+              "id": "b95573b4-7fc7-4820-9c64-92442a5e6a9d",
+              "name": "reward_message",
+              "value": "You're a loyal customer! You've earned 10% cashback on your purchase today!",
+              "type": "string"
+            },
+            {
+              "id": "ece9ca77-5bf4-425c-9401-51877080fe37",
+              "name": "points_to_add",
+              "value": "100",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        928,
+        32
+      ],
+      "id": "0ba246ad-b9a9-4052-bdfe-a38527adfcab",
+      "name": "Cash Back reward"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "7be6e88c-79c4-4244-a659-c3fd0b8f988e",
+              "leftValue": "={{ $now.diff(DateTime.fromISO($json.last_visit_date), 'days').days }}",
+              "rightValue": 30,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        576,
+        304
+      ],
+      "id": "33c43d22-eade-4daa-b3e7-03d5ab76fe99",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "460f2e11-f786-48b2-9df2-cbf864a51e4f",
+              "name": "reward_type",
+              "value": "Win-back Offer",
+              "type": "string"
+            },
+            {
+              "id": "2fb16649-9119-4e6b-881c-c4959fc13ff2",
+              "name": "reward_message",
+              "value": "We miss you! Come back and get 20% off your next purchase at Sharma General Store!",
+              "type": "string"
+            },
+            {
+              "id": "fa3eabb7-21d2-4a44-b938-6d800ab2c146",
+              "name": "points_to_add",
+              "value": "0",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        928,
+        208
+      ],
+      "id": "907e3f4e-6cf7-4144-868d-ff633c7c842d",
+      "name": "Win-back"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3911721b-a24c-4d7a-8299-19e59e67cd2d",
+              "name": "reward_type",
+              "value": "Welcome Bonus",
+              "type": "string"
+            },
+            {
+              "id": "66948a34-ccf1-46cd-9749-b1e5166d0b68",
+              "name": "reward_message",
+              "value": "Value: Welcome to the Store! Here's 50 bonus points as our gift to you!",
+              "type": "string"
+            },
+            {
+              "id": "186e41a1-71f2-40dc-9366-d907becb3764",
+              "name": "points_to_add",
+              "value": "50",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        928,
+        -128
+      ],
+      "id": "d9ea95f5-d3f3-4113-9ee7-073e720bb15c",
+      "name": "Welcome"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.email }}",
+        "subject": "={{ $json.reward_type }} - {{ $json.shop_name }}",
+        "message": "=Hi {{ $json.customer_name }},\n\n{{ $json.reward_message }}\n\nYou now have {{ $json.points }} points in your account.\n\nThank you for shopping with us!\nTeam {{ $json.shop_name }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1264,
+        32
+      ],
+      "id": "c79287fc-c0d4-40cf-8068-49805807e350",
+      "name": "Send a message",
+      "webhookId": "8860f754-ac94-4d26-b5ab-18a45171fd3d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "8mhEwqiJ9E9SMGdO",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -112,
+        160
+      ],
+      "id": "94f4a512-0768-47ca-9dc1-25c72e5c2ae2",
+      "name": "When clicking ‘Execute workflow’"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        []
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Welcome",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Cash Back reward",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Win-back",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Welcome": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cash Back reward": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Win-back": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "8fb5f91d-8e22-4b06-95ba-2d32e98a13ba",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "9700240794d8ff64afa051a20998ae4c25d509f815bbc22da4f5eb5b9ba63736"
+  },
+  "id": "nRRqtU2qCc4rNK75",
+  "tags": []
+}
