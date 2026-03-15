@@ -10,7 +10,7 @@ This workflow helps businesses **increase customer retention and engagement** by
 
 Below is the visual representation of the n8n workflow.
 
-![Workflow Diagram](workflow.png)
+![Workflow Diagram](Workflow1.png)
 
 ---
 
